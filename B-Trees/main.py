@@ -199,22 +199,85 @@ class BTree:
             
 
 
-bt = BTree(t=3)  # min degree 3 → each node holds 2–5 keys
+bt = BTree(t=3)
 
-for key in [10, 20, 5, 6, 12, 30, 7, 17, 3, 1, 8, 25]:
-    bt.insert(key)
+# ── insert ────────────────────────────────────
+bt.insert(10)
+print("insert(10):                  ", bt.traverse())
 
-print("Tree structure:")
-bt.print_tree()
+bt.insert(20)
+print("insert(20):                  ", bt.traverse())
 
-print("\nIn-order traversal:", bt.traverse())
+bt.insert(5)
+print("insert(5):                   ", bt.traverse())
 
-print("\nSearch 12:", bt.search(12))
-print("Search 99:", bt.search(99))
-   
-bt.delete(6)
-bt.delete(20)
-print("\nAfter deleting 6 and 20:", bt.traverse())
+bt.insert(6)
+print("insert(6):                   ", bt.traverse())
+
+bt.insert(12)
+print("insert(12):                  ", bt.traverse())
+
+bt.insert(30)
+print("insert(30):                  ", bt.traverse())
+
+bt.insert(7)
+print("insert(7):                   ", bt.traverse())
+
+bt.insert(17)
+print("insert(17):                  ", bt.traverse())
+
+bt.insert(3)
+print("insert(3):                   ", bt.traverse())
+
+bt.insert(1)
+print("insert(1):                   ", bt.traverse())
+
+bt.insert(8)
+print("insert(8):                   ", bt.traverse()) 
+
+bt.insert(25)
+print("insert(25):                  ", bt.traverse())
+
+
+# ── search ────────────────────────────────────
+print("\nsearch(1):                   ", bt.search(1))   # found (leftmost)
+print("search(12):                  ", bt.search(12))   # found (middle)
+print("search(30):                  ", bt.search(30))   # found (rightmost)
+print("search(99):                  ", bt.search(99))   # None
+print("search(0):                   ", bt.search(0))    # None
+
+
+# ── delete leaf key ───────────────────────────
+bt.delete(1, None)
+print("\ndelete(1)  [leaf]:           ", bt.traverse())  # [3, 5, 6, 7, 8, 10, 12, 17, 20, 25, 30]
+
+bt.delete(3, None)
+print("delete(3)  [leaf]:           ", bt.traverse())  # [5, 6, 7, 8, 10, 12, 17, 20, 25, 30]
+
+
+# ── delete internal key ───────────────────────
+bt.delete(10, None)
+print("\ndelete(10) [internal]:       ", bt.traverse())  # [5, 6, 7, 8, 12, 17, 20, 25, 30]
+
+bt.delete(20, None)
+print("delete(20) [internal]:       ", bt.traverse())  # [5, 6, 7, 8, 12, 17, 25, 30]
+
+
+# ── delete key that triggers merge/rebalance ──
+bt.delete(6, None)
+print("\ndelete(6)  [rebalance]:      ", bt.traverse())  # [5, 7, 8, 12, 17, 25, 30]
+
+bt.delete(25, None)
+print("delete(25) [rebalance]:      ", bt.traverse())  # [5, 7, 8, 12, 17, 30]
+
+
+# ── delete non-existent key ───────────────────
+print("\ndelete(99) [missing]:        ", end="")
+bt.delete(99, None) # should print "Key 99 not found."
+
+
+# ── traverse stays sorted throughout ─────────
+print("\nfinal traverse:              ", bt.traverse())  # [5, 7, 8, 12, 17, 30]
     
         
          
